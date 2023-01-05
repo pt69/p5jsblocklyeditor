@@ -1,0 +1,68 @@
+<h4><i class="bi bi-easel"></i>&nbsp;Tutorial: Das erste Programm</h4>
+
+<div class="card mt-3 mb-3">
+  <div class="card-header"><b>Zeichenfläche anlegen</b></div>  
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+          <p><b>Lösche</b> alle vorhandenen Blöcke, indem du die vorhandenen Blöcke auf die Werkzeugleiste oder den Mülleimer ziehst.</p>
+          <p><img src="tutorials/ersteschritte/t_01_01a.jpg"></p>
+      </li>
+      <li class="list-group-item">
+          <p>Der Block "setup()" muss in jedem Programm vorhanden sein.</p>
+          <p><b>Ziehe</b> den Block "setup()" aus der Kategorie "p5-Funktionen" in den Editor. <b>Gib</b> die gewünschte Breite (z.B. 300) und Höhe (z.B. 400) der Zeichenfläche in Pixeln an.</p>
+          <p><img src="tutorials/ersteschritte/t_01_01b.jpg"></p>
+      </li>
+      <li class="list-group-item">
+          <p>Der Zeichenbereich soll mit einer Farbe eingefärbt werden.</p>
+          <p><b>Ziehe</b> dazu den oberen Block "Hintergrundfarbe" aus der Kategorie "Aussehen" in den Editor und <b>suche</b> dir eine Farbe aus, indem du auf das Farbfeld hinter "Hintergrundfarbe" klickst.</p>
+          <p><img src="tutorials/ersteschritte/t_01_01c.jpg"></p>
+      </li>
+      <li class="list-group-item">
+          <p><b>Klicke</b> auf die Schaltfläche "Code ausführen" und eine Zeichenfläche in der von dir gewählten Größe und Farbe wird angelegt.</p>
+          <p><img src="tutorials/ersteschritte/t_01_01d.jpg"></p>
+      </li>
+      <li class="list-group-item">
+        <p>Das kürzest mögliche Programm im p5.js-Blockly-Editor sieht wie folgt aus:</p>
+        <p><img src="tutorials/ersteschritte/t_01_01.jpg"></p>
+      </li>
+    </ul>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header"><b>Figur zeichnen</b></div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <p>Eine Figur wird mit p5.js gezeichnet, indem man zuerst das Aussehen der Figur (Füllfarbe, Linienfarbe und Liniendicke) festlegt und dann die Figur an einer bestimmten Stelle in der Zeichenfläche mit einer bestimmten Größe zeichnet.</p>
+        <p><b>Füge</b> aus der Kategorie "Aussehen" folgende Blöcke ein und suche dir jeweils eine Farbe aus:</p>
+        <p><img src="tutorials/ersteschritte/t_01_02a.jpg"></p>
+        <p>Gezeichnet wird noch nichts, da die Figur noch fehlt.</p>
+      </li>
+      <li class="list-group-item">
+        <p><b>Füge</b> aus der Kategorie "Grundformen" den Block "Ellipse" ein.</p>
+        <p><img src="tutorials/ersteschritte/t_01_02b.jpg"></p>
+        <p><b>Gib</b> bei "x =" den Wert 150 und bei "y =" den Wert 100 ein. Für "Breite" und "Höhe" gib jeweils den Wert 60 ein.</p>
+        <p><img src="tutorials/ersteschritte/t_01_02c.jpg"></p>
+        <p>Es wird ein Kreis gezeichnet, da Breite und Höhe der Ellipse gleich sind. Die Mitte des Kreises wird 150 Pixel entfernt vom linken Rand und 100 Pixel entfernt vom oberen Rand gezeichnet.</p>
+      </li>      
+      <li class="list-group-item">
+        <p><b>Vervollständige</b> das Programm wie folgt:</p>
+        <p><img src="tutorials/ersteschritte/t_01_02.jpg"></p>
+        <p>Die obere linke Ecke des Rechtecks wird 100 Pixel entfernt vom linken Rand und 160 Pixel entfernt vom oberen Rand gezeichnet. Von dort aus wird das Rechteck nach rechts und nach unten gezeichnet.</p>
+      </li>
+    </ul>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header">Beispielprogramm starten:</div>  
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <button id="t_01_bsp01" type="button" class="btn btn-light"><i class="bi bi-play-fill"></i>&nbsp;&nbsp;Figur zeichnen</button>
+      </li> 
+    </ul>
+</div>
+
+<script>
+document.getElementById('t_01_bsp01').onclick = function() {
+  loadBeispielProgramm('tutorials/ersteschritte/t_01.p5xml');
+};
+</script>

@@ -1,0 +1,278 @@
+.structcode{
+  width:30em;
+  min-height:30em;
+  resize:both;
+  padding:10px;
+}
+.structcodecmd{
+  color:blue;
+  font-weight:bold;
+}
+figure{
+  position:relative;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding:.25em;
+  padding-bottom: 0;
+}
+figcaption{
+  border: 1px dotted gray;
+  width: calc(100% + 2px);
+  display: block;
+  /* margin-top: .5em; */
+  background-color: white;
+  padding: .25em;
+  font-family: sans-serif;
+  position: absolute;
+  left: -1px;
+  top: -1.5em;
+  box-sizing: border-box;
+  line-height: 1em;
+}
+
+figure[data-parsererror]:after{
+  color:red;
+  content:attr(data-parsererror);
+  display:block;
+  position: relative;
+  top:100%;
+}
+
+#diagram{
+  position:relative;
+}
+
+struct-diagram{
+  --decision-then:'wahr';
+  --decision-else:'falsch';
+  font-size: 0.9em;
+}
+struct-diagram:before{
+  position:relative;
+  display: block;
+  content:attr(caption);
+  font-weight: bold;
+  font-size: 1em;
+  line-height: 1.5em;
+  padding-left: .25em;
+}
+struct-sequence,struct-block,struct-loop,struct-iteration,struct-call,struct-break,struct-comment{
+  display:block;
+  box-sizing: border-box;
+}
+struct-decision>struct-block,struct-select>struct-case,struct-select>struct-block{
+  display: table-cell;
+  background-color:lightgray;
+}
+struct-sequence,struct-decision,struct-select,struct-loop,struct-iteration,struct-call,struct-break,struct-comment{
+  padding:.25em;
+  background-color:white;
+  border-top:1px solid black;
+  border-left:1px solid black;
+}
+struct-decision,struct-select{
+  display:table;
+  width:100%;
+  box-sizing: border-box;
+  padding:0px;
+  padding-top:2.25em;
+  position:relative;
+}
+struct-decision:after,struct-select:after{
+  text-align:center;
+}
+struct-decision:after,struct-select:after{
+  display:table-caption;
+  content: attr(condition);
+  position:absolute;
+  width:100%;
+  top:0;
+  left:0;
+  text-shadow: 1px 1px white, -1px 1px white, -1px -1px white, 1px -1px white;
+  z-index:10;
+}
+struct-decision>struct-block, struct-select>*{
+  position: relative;
+  vertical-align: top;
+}
+struct-decision>struct-block:after,
+struct-select>struct-case:after,
+struct-select>struct-block:after{
+  position: absolute;
+  top:-1.5em;
+  font-style: normal;
+  font-size: .9em;
+  color:gray;
+}
+struct-decision>struct-block:last-child:after{
+  content:var(--decision-else);
+  right:.25em;
+}
+struct-decision>struct-block:first-child:after{
+  content:var(--decision-then);
+  left: .25em;
+}
+struct-iteration:before{
+  content:attr(condition);
+  display:block;
+  height:0px;
+  position:relative;
+  top:-1.75em;
+  left:-1em;
+}
+struct-iteration{
+  padding:0px;
+  padding-top:2em;
+  padding-left:1.5em;
+}
+struct-loop{
+  padding:0px;
+  padding-bottom:2em;
+  padding-left:1.5em;
+}
+struct-loop:after{
+  display:block;
+  content:attr(condition);
+  height:0px;
+  position:relative;
+  bottom:-.25em;
+  left:-1em;
+}
+struct-comment{
+  white-space: pre-line;
+  font-style:italic;
+  color:gray;
+}
+struct-diagram{
+  font-family:sans-serif;
+  display: inline-block;
+  min-width: 20em;
+  line-height: 1.5em;
+  padding:.5em;
+  background-color: lightblue;
+  width: 100%;
+}
+struct-diagram>*{
+  border-right:1px solid black;
+}
+struct-diagram>*:last-child{
+  border-bottom:1px solid black;
+}
+struct-select>struct-case:not(:first-child){
+  border-left: 1px solid black;
+}
+struct-block>struct-sequence{
+  min-width:3em;
+}
+struct-block>struct-sequence:empty:after{
+  content: ' ';
+}
+struct-decision>struct-block>*,
+struct-select>struct-case>*,
+struct-select>struct-block>*{
+  border-left:none;
+}
+struct-decision>struct-block:first-child:before,
+struct-select>struct-case:first-of-type:before {
+  background-image:url(line_tl_br.png);
+}
+struct-decision>struct-block:last-child:before,
+struct-select>struct-block:before {
+  background-image:url(line_bl_tr.png);
+}
+struct-select>struct-case:last-of-type:before{
+}
+struct-select>struct-case:after{
+  content: attr(condition);
+}
+struct-decision>struct-block:before,
+struct-select>struct-case:first-of-type:before,
+struct-select>struct-block:before {
+  content:'';
+  position:absolute;
+  top:-2.25em;
+  width:100%;
+  height:2.25em;
+  box-sizing: border-box;
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  z-index:0;
+}
+struct-block:not(:first-child){
+  border-left:1px solid black;
+}
+struct-decision>struct-block>*:last-child,
+struct-loop>struct-block>*:last-child,
+struct-select>*>*:last-child{
+  border-bottom: 1px solid black;
+}
+struct-loop>struct-block>*:first-child{
+  border-top:none;
+}
+struct-break{
+  padding-left:1.5em;
+  position:relative;
+}
+struct-break:before{
+  background-image:url(line_bl_tr.png);
+  top:0;
+}
+struct-break:after{
+  background-image:url(line_tl_br.png);
+  bottom:0;
+}
+struct-break:before,struct-break:after{
+  content:'';
+  background-size: 100% 100%;
+  background-position: center;
+  position:absolute;
+  width:1.5em;
+  height:1em;
+  left:0;
+}
+struct-diagram.compactselect struct-select{
+  display:flex;
+  flex-direction:column;
+  padding-left:1.5em;
+}
+struct-diagram.compactselect struct-select:after{
+  text-align: left;
+  left:.25em;
+}
+struct-diagram.compactselect struct-select>*:before{
+  background:none;
+}
+struct-diagram.compactselect struct-select>*:not(:first-child){
+  margin-top:1.5em;
+}
+struct-diagram.compactselect struct-select>*:first-child{
+  border-left:1px solid black;
+}
+struct-diagram.compactselect struct-select>struct-block:after{
+  content:'default';
+}
+struct-call{
+  padding-left:1em;
+  padding-right:1em;
+  position:relative;
+  min-height:2em;
+}
+struct-call:after,struct-call:before{
+  display:block;
+  width:.5em;
+  height:100%;
+  content:'';
+  position:absolute;
+  top:0px;
+}
+struct-call:after{
+  right:0em;
+  border-left:1px solid black;
+}
+struct-call:before{
+  left:0em;
+  border-right:1px solid black;
+}

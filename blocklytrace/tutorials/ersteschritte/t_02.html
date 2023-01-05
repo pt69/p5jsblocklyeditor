@@ -1,0 +1,28 @@
+<h4><i class="bi bi-easel"></i>&nbsp;Tutorial: Spiel 2048</h4>
+
+<div class="card mb-3">
+  <div class="card-header">Beispielprogramm laden:</div>  
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <button id="t_02_bsp01" type="button" class="btn btn-light"><i class="bi bi-play-fill"></i>&nbsp;&nbsp;Spiel 2048</button>
+      </li> 
+    </ul>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header"><b>Struktogramm generieren</b></div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <p>Nachdem das Programm geladen ist, kann man dieses durch Klicke auf "Nächster Schritt" starten und Schritt für Schritt ausführen.</p>
+        <p>Durch einen Klick auf "Struktogramm" kann man aus den Blöcken ein Nassi-Shneiderman-Struktogramm erzeugen lassen.</p>
+        <p><img src="tutorials/ersteschritte/t_02_01.jpg"></p>
+        <p>Wenn es Änderungen im Programm gibt, kann man das Struktogramm durch einen Klick auf "Aktualisieren" mit den Änderungen neu erzeugen.</p>
+      </li>
+    </ul>
+</div>
+
+<script>
+document.getElementById('t_02_bsp01').onclick = function() {
+  loadBeispielProgramm('tutorials/ersteschritte/t_02.p5xml');
+};
+</script>

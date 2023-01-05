@@ -1,0 +1,32 @@
+<h4><i class="bi bi-easel"></i>&nbsp;Tutorial: Das erste Programm</h4>
+
+<div class="card mb-3">
+  <div class="card-header">Beispielprogramm laden:</div>  
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <button id="t_01_bsp01" type="button" class="btn btn-light"><i class="bi bi-play-fill"></i>&nbsp;&nbsp;Erstes Programm</button>
+      </li> 
+    </ul>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header"><b>Trace-Tabelle erstellen</b></div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <p>Nachdem das Programm geladen ist, kann man dieses durch Klicke auf "Nächster Schritt" starten und Schritt für Schritt ausführen.</p>
+        <p><img src="tutorials/ersteschritte/t_01_00.jpg"></p>
+        <p>Überall dort, wo im Programm der Block "Trace-Eintrag dazu" eingefügt ist, wird der aktuelle Wert der in den Block eingebauten Variablen in der Trace-Tabelle ausgegeben.</p>
+        <p><strong>WICHTIG!</strong><br>Jeder Block "Trace-Eintrag dazu" muss einen einzigartigen Namen haben, damit die Trace-Tabelle richtig ausgefüllt wird.</p>
+        <p><img src="tutorials/ersteschritte/t_01_01.jpg"></p>
+        <p>Wenn alle "Trace-Eintrag dazu"-Blöcke einen einzigartigen Namen haben, dann sollte die Trace-Tabelle fehlerfrei ausgegeben werden.</p>
+        <p><img src="tutorials/ersteschritte/t_01_02.jpg"></p>    
+        <p>Während das Programm Schritt für Schritt ausgeführt wird, kann der Editor mit der Maus verschoben werden oder gezoomt werden, ohne dass die Ausführung abgebrochen wird. Sobald man einen Block anklickt wird die Ausführung des Programms zurückgesetzt und die Trace-Tabelle gelöscht.</p>
+      </li>
+    </ul>
+</div>
+
+<script>
+document.getElementById('t_01_bsp01').onclick = function() {
+  loadBeispielProgramm('tutorials/ersteschritte/t_01.p5xml');
+};
+</script>

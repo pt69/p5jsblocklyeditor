@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Blockly-Trace-Editor">
+
+    <title>Blockly-Trace-Editor</title>
+    
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="lib/prism/prism.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="lib/bootstraptable/bootstrap-table.min.css" rel="stylesheet">  
+    <link href="lib/structogramview/structogramview.css" rel="stylesheet">
+
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/p5js/p5.min.js"></script>    
+    <script src="lib/bootstrap/v5/js/bootstrap.min.js"></script>
+    <script src="lib/bootstraptable/bootstrap-table.min.js"></script>
+    <script src="lib/bootstraptable/bootstrap-table-de-DE.min.js"></script>    
+    <script src="lib/prism/prism.js"></script>
+    <script src="lib/lz-string/lz-string.js"></script>
+    <script src="lib/split/split.min.js"></script> 
+    
+    <script src="js/toolbox.js" defer></script>
+    <script src="lib/acorn/acorn_interpreter.js" defer></script>
+    <script src="lib/blockly/blockly_compressed.js" defer></script>
+    <script src="lib/blockly/blocks_compressed.js" defer></script>
+    <script src="lib/blockly/javascript_compressed.js" defer></script>
+    <script src="lib/blockly/msg/js/de.js" defer></script>
+    <script src="js/custom-dialog.js" defer></script>
+    <script src="js/adt_stack.js" defer></script>
+    <script src="js/adt_queue.js" defer></script>
+    <script src="js/adt_dynArray.js" defer></script>
+    <script src="js/bloecke_overwrite.js" defer></script>
+    <script src="js/bloecke_text.js" defer></script>
+    <script src="js/bloecke_mathe.js" defer></script>     
+    <script src="lib/domtoimage/dom-to-image.min.js" defer></script>     
+    <script src="lib/structogramview/structogramview.js" defer></script>
+    <script src="js/traceblockly.js" defer></script>    
+    <script src="js/helper.js" defer></script>    
+</head>
+
+<body onload = "setTimeout(p5Init, 1000)">
+
+<xml id="startBlocks" style="display: none"></xml>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light pt-1">
+  <div class="container-fluid">
+    <form class="d-flex">
+        <div class="navbar-brand">Blockly-Trace-Editor</div>
+    </form>
+    <form class="d-flex">
+      <div class="btn-group btn-group-sm" role="group" aria-label="navi1">
+        <button id="jsAnzeigen" type="button" class="btn btn-outline-secondary " data-bs-toggle="modal" data-bs-target="#JavaScriptModal">
+          <i class="bi bi-code-square"></i>&nbsp;&nbsp;JavaScript-Code
+        </button>
+        <button id="flemsAnzeigen" type="button" class="btn btn-outline-secondary" >
+          <i class="bi bi-file-text"></i>&nbsp;&nbsp;Text-Editor
+        </button>
+        <button id="StruktogrammAnzeigen" onclick="struktogrammAnzeigen()" type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#StruktogrammOffCanvas" aria-controls="StruktogrammOffCanvas"><i class="bi bi-file-ruled"></i>  Struktogramm
+        </button>        
+      </div>
+    </form>    
+    <form class="d-flex">
+      <div class="btn-group btn-group-sm" role="group" aria-label="navi2">
+        <button id="HilfeAnzeigen" type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#HilfeOffCanvas" aria-controls="HilfeOffCanvas">
+          <i class="bi bi-question-circle"></i>
+        </button>            
+        <button id="InfoAnzeigen" type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#InfoModal">
+          <i class="bi bi-info-circle"></i>
+        </button>        
+      </div>
+    </form>
+  </div>
+</nav>
+
+<!-- Preview-Editor -->
+<div class="container-fluid">
+    <div class="split">
+        <div id="split-0">
+         <div class="row">
+            <div class="container-fluid" style="min-width: 350px">
+              <button onclick="stepCode()" id="stepButton" type="button" class="btn btn-sm btn-outline-primary me-1 mt-2 mb-2"><i class="bi bi-skip-end-fill"></i>&nbsp;&nbsp;Schrittweise</button>
+              <button onclick="executeCode()" type="button" class="btn btn-sm btn-outline-primary me-1 mt-2 mb-2"><i class="bi bi-play-fill"></i>&nbsp;&nbsp;Füllen</button>  
+              <button onclick="tabelleLoeschen()" type="button" class="btn btn-sm btn-outline-primary me-1 mt-2 mb-2"><i class="bi bi-arrow-clockwise"></i>&nbsp;&nbsp;Leeren</button>   
+              <button id="p5loeschen" type="button" class="btn btn-sm btn-outline-primary me-1 mt-2 mb-2"><i class="bi bi-x-circle"></i>&nbsp;&nbsp;Löschen</button>              
+            </div>
+          </div>     
+          <div class="row">
+            <div id class="container-fluid mt-2">
+                <div id="traceTabelleDiv"></div>
+            </div>
+          </div>
+        </div>  
+        <div id="split-1"> 
+            <div id="blocklyArea">  
+                <div id="blocklyDiv">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light pt-2">
+  <div class="container-fluid">
+    <form class="d-flex">
+      <div class="input-group input-group-sm">
+        <input id="p5saveDateiname" type="text" class="form-control" aria-label="Dateiname" aria-describedby="p5Save">
+        <button id="p5Save" class="btn btn-outline-secondary" type="button"><i class="bi bi-download"></i> Speichern</button>
+      </div>
+    </form>
+    <form class="d-flex">
+      <div class="input-group input-group-sm">
+        <label class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-upload"></i> Programm laden <input type="file" accept=".p5xml" id="p5Dateiwahl" hidden>
+        </label>
+      </div>
+    </form>
+    <form class="d-flex">
+      <button id="URLSave" class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#URLModal"><i class="bi bi-file-zip"></i> LZ-Codierung</button>
+    </form> 		    
+  </div>
+</nav>
+
+<!-- Modal-JavaScript -->
+<div class="modal fade" id="JavaScriptModal" tabindex="-1" aria-labelledby="JavaScriptModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="JavaScriptModalLabel"><i class="bi bi-code-square"></i>&nbsp;&nbsp;JavaScript-Code</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <pre><code class="language-js" id="codeDiv"></code></pre>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Schließen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal-URL -->
+<div class="modal fade" id="URLModal" tabindex="-1" aria-labelledby="URLModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="URLModalLabel"><i class="bi bi-file-zip"></i>&nbsp;&nbsp;LZ-Codierung</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="wrap" id="URLDiv"></div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Schließen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal-Info -->
+<div class="modal fade" id="InfoModal" tabindex="-1" aria-labelledby="InfoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="InfoModalLabel"><i class="bi bi-info-circle"></i>&nbsp;&nbsp;Über Blockly-Trace-Editor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Der <strong>Blockly-Trace-Editor</strong> ermöglicht das Erstellen einer Trace-Tabelle für ein Blockly-Programm.</p>
+        <hr>
+       <p>Der Blockly-Trace-Editor ist ein unterrichtsbegleitendes Projekt für den Informatik-Unterricht am Gymnasium Westerstede <a href="https://www.informatik.gym-wst.de" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a>.</p>
+        <p><strong>Autor:</strong> Matthias Perenthaler<br><strong>Version:</strong> V1.01.01<br><strong>Lizenz:</strong> MIT License <a href="https://de.wikipedia.org/wiki/MIT-Lizenz" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a><br><strong>Repository:</strong> Github <a href="https://github.com/pt69/p5jsblocklyeditor" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a></p>
+        <hr>
+        <ul class="list-group">
+            <li class="list-group-item active">Verwendete Bibliotheken</li>
+            <li class="list-group-item">Blockly&nbsp;&nbsp;<a href="https://github.com/google/blockly" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/google/blockly/blob/master/LICENSE" class="link-secondary" target="_blank">Apache License 2.0</a></li>
+            <li class="list-group-item">JS-Interpreter&nbsp;&nbsp;<a href="https://github.com/NeilFraser/JS-Interpreter" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/NeilFraser/JS-Interpreter/blob/master/LICENSE" class="link-secondary" target="_blank">Apache License 2.0</a></li>
+            <li class="list-group-item">Acorn JS-Parser&nbsp;&nbsp;<a href="https://github.com/acornjs/acorn" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/acornjs/acorn/blob/master/acorn/LICENSE" class="link-secondary" target="_blank">MIT License</a></li>  
+            <li class="list-group-item">Structogram Viewer&nbsp;&nbsp;<a href="https://github.com/nigjo/structogramview" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/nigjo/structogramview/blob/main/LICENSE" class="link-secondary" target="_blank">Apache License 2.0</a></li>  
+            <li class="list-group-item">Dom-to-Image&nbsp;&nbsp;<a href="https://github.com/tsayen/dom-to-image" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/tsayen/dom-to-image/blob/master/LICENSE" class="link-secondary" target="_blank">MIT License</a></li>             
+            <li class="list-group-item">Bootstrap&nbsp;&nbsp;<a href="https://getbootstrap.com/" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" class="link-secondary" target="_blank">MIT License</a></li>
+            <li class="list-group-item">Bootstrap Table&nbsp;&nbsp;<a href="https://bootstrap-table.com/" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/wenzhixin/bootstrap-table/blob/master/LICENSE" class="link-secondary" target="_blank">MIT License</a></li>            
+            <li class="list-group-item">JQuery&nbsp;&nbsp;<a href="https://jquery.com/" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://jquery.org/license/" class="link-secondary" target="_blank">MIT License</a></li>  
+            <li class="list-group-item">Prism&nbsp;&nbsp;<a href="https://prismjs.com/" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/PrismJS/prism/blob/master/LICENSE" class="link-secondary" target="_blank">MIT License</a></li> 
+            <li class="list-group-item">LZ_String&nbsp;&nbsp;<a href="https://github.com/pieroxy/lz-string/" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/pieroxy/lz-string/blob/master/LICENSE" class="link-secondary" target="_blank">MIT License</a></li>
+            <li class="list-group-item">Split&nbsp;&nbsp;<a href="https://github.com/nathancahill/split" class="link-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a> - Lizenz: <a href="https://github.com/nathancahill/split/blob/master/LICENSE" class="link-secondary" target="_blank">MIT License</a></li>            
+        </ul>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Schließen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="HilfeOffCanvas" aria-labelledby="HilfeOffCanvasLabel" data-width="100%">
+  <div class="offcanvas-header">
+    <button id="backToContent" type="button" class="btn btn-light btn-sm"> Zurück zur Auswahl</button>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div id="divTutorials" class="offcanvas-body">
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border text-secondary m-5" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="StruktogrammOffCanvas" aria-labelledby="StruktogrammOffCanvasLabel" data-width="100%">
+  <div class="offcanvas-header">
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="container-fluid">
+      <div class="row">
+        <h4>Struktogramm</h4>
+      </div>
+      <div class="row">
+        <main>
+            <figure id="source" style="display:none">
+              <textarea tabindex="1" id="struktogramm01" class="structcode" data-caption="Sample 1" readonly></textarea>
+            </figure>
+            <figure id="diagram">
+              <div class="structview" id="diagramView" data-structcode-id="struktogramm01" data-structcode-xml="xmlview" data-structcode-svg="svgdiagram">
+              </div>
+            </figure>
+        </main>
+      </div>
+      <div class="row">
+        <button onclick="struktogrammAnzeigen()" type="button" class="btn btn-sm btn-outline-primary ms-3 me-1 mt-2 mb-2" style="width:160px;margin-top:20px"><i class="bi bi-play-fill"></i>  Aktualisieren</button>
+        <button onclick="struktogrammBearbeiten()" id="StruktogrammEditorAnzeigen" type="button" class="btn btn-sm btn-outline-primary ms-1 me-1 mt-2 mb-2" style="width:160px;margin-top:20px" data-bs-toggle="offcanvas" data-bs-target="#StruktogrammEditorOffCanvas" aria-controls="StruktogrammEditorOffCanvas"><i class="bi bi-pencil-square"></i>  Bearbeiten
+        </button>       
+      </div>
+    </div>
+  </div>  
+</div>
+
+<div class="offcanvas offcanvasEditor offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="StruktogrammEditorOffCanvas" aria-labelledby="StruktogrammEditorOffCanvasLabel" data-width="100%">
+  <div class="offcanvas-header">
+    <div style="font-size: 1.4em;">Struktogramm-Editor</div>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="container-fluid">
+      <div class="row">
+        <main>
+            <figure id="sourceEditor">
+              <div style="font-size: 0.9em;">Quellcode</div>
+              <textarea tabindex="1" id="struktogrammEditor01" class="structcode" data-caption="Sample Editor"></textarea>
+            </figure>
+            <figure id="diagramEditor">
+              <div style="font-size: 0.9em;">Struktogramm</div>
+              <div class="structview" id="diagramEditorView" data-structcode-id="struktogrammEditor01" data-structcode-xml="xmlview" data-structcode-svg="svgdiagram">
+              </div>
+            </figure>
+        </main>
+      </div>
+      <div class="row">
+        <button onclick="updateEditor()" type="button" class="btn btn-sm btn-outline-primary ms-3 me-1 mt-2 mb-2" style="width:160px;margin-top:20px"><i class="bi bi-play-fill"></i>  Aktualisieren</button>
+      </div>
+    </div>
+  </div>
+  <!-- Struktogramm bearbeiten - Footer -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light pt-2">
+    <form class="d-flex">
+      <div class="input-group input-group-sm ms-2">
+        <input id="struktogrammDateiname" type="text" class="form-control " aria-label="struktogrammDateiname" aria-describedby="struktSave">
+        <button id="struktSave" class="btn btn-outline-secondary" type="button"><i class="bi bi-download"></i> Quellcode</button>
+          <label class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-upload"></i> Quellcode<input type="file" accept=".strukt" id="struktogrammDateiwahl" hidden>
+          </label>
+      </div>
+    </form>
+    <form class="d-flex"> 
+      <div class="input-group input-group-sm ms-2">
+        <button id="struktSvgSave" class="btn btn-outline-secondary ms-2 me-2" type="button"><i class="bi bi-download"></i> Struktogramm als SVG</button>
+      </div>    
+    </form>    
+  </nav>  
+</div>
+
+<!-- Programm löschen Modal -->
+<div class="modal fade" id="programmLoeschenModal" tabindex="-1" aria-labelledby="programmLoeschenModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        Soll das Programm wirklich gelöscht werden?
+      </div>
+      <div class="modal-footer">
+        <button id="btnLoeschNein" type="button" class="btn btn-sm btn-outline-secondary">Abbrechen</button>
+        <button id="btnLoeschJa" type="button" class="btn btn-sm btn-outline-primary">Programm löschen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

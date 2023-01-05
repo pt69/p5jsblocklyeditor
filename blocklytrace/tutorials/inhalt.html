@@ -1,0 +1,50 @@
+<h3>Anleitungen und Beispiele</h3>
+<div class="accordion accordion-flush" id="accordionF1">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-h1">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-c1" aria-expanded="false" aria-controls="flush-c1">
+        Erste Schritte mit dem Blockly-Trace-Editor
+      </button>
+    </h2>
+    <div id="flush-c1" class="accordion-collapse collapse" aria-labelledby="flush-h1" data-bs-parent="#accordionF1">
+      <div class="accordion-body">
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2">
+            <button id="tutorial01" type="button" class="btn btn-light w-100 text-start"><i class="bi bi-easel"></i>&nbsp;&nbsp;Das erste Programm</button>
+          </li>
+          <li class="nav-item mb-2">
+            <button id="tutorial02" type="button" class="btn btn-light w-100 text-start"><i class="bi bi-easel"></i>&nbsp;&nbsp;Spiel 2048</button>
+          </li>     
+          <li class="nav-item mb-2">
+            <button id="tutorial03" type="button" class="btn btn-light w-100 text-start"><i class="bi bi-easel"></i>&nbsp;&nbsp;ADT Stapel</button>
+          </li> 
+          <li class="nav-item mb-2">
+            <button id="tutorial04" type="button" class="btn btn-light w-100 text-start"><i class="bi bi-easel"></i>&nbsp;&nbsp;ADT Schlange</button>
+          </li>  
+          <li class="nav-item mb-2">
+            <button id="tutorial05" type="button" class="btn btn-light w-100 text-start"><i class="bi bi-easel"></i>&nbsp;&nbsp;ADT Dynamische Reihung</button>
+          </li>            
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+//Erste Schritte mit Blockly-Trace
+document.getElementById('tutorial01').onclick = function() {
+  loadTutorial('tutorials/ersteschritte/t_01.html');
+};
+document.getElementById('tutorial02').onclick = function() {
+  loadTutorial('tutorials/ersteschritte/t_02.html');
+};
+document.getElementById('tutorial03').onclick = function() {
+  loadTutorial('tutorials/ersteschritte/t_03.html');
+};
+document.getElementById('tutorial04').onclick = function() {
+  loadTutorial('tutorials/ersteschritte/t_04.html');
+};
+document.getElementById('tutorial05').onclick = function() {
+  loadTutorial('tutorials/ersteschritte/t_05.html');
+};
+</script>
